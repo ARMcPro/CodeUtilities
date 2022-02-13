@@ -8,6 +8,7 @@ import io.github.codeutilities.sys.player.chat.ChatType;
 import io.github.codeutilities.sys.player.chat.ChatUtil;
 import io.github.codeutilities.sys.player.DFInfo;
 import io.github.codeutilities.sys.networking.State;
+import io.github.codeutilities.sys.player.chat.MessageGrabber;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -100,6 +101,13 @@ public class MPlayerSendMessage {
                             conversationMessage(string, ci);
                     }
                 } else conversationMessage(string, ci);
+            } else if (string.matches("/s|/spawn|/leave|/hypercube:s|/hypercube:spawn|/hypercube:leave")) {
+                if (Config.getBoolean("autofly")) {
+                    MessageGrabber.hideNext();
+                    minecraftClient.send(() -> {
+                        ChatUtil.executeCommandSilently("fly");
+                    });
+                }
             }
         }
         //start conversation
